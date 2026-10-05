@@ -39,7 +39,7 @@ api:
       - "/favicon.ico"
       - "/error"
     trustedProxies:
-      - "10.0.0.1" # or ["*"] to trust all
+      - "10.0.0.1" # list exact proxies to prevent spoofing
     captureUserAgent: true
     filterOrder: -2147483638 # Ordered.HIGHEST_PRECEDENCE + 10
 ```
@@ -49,7 +49,7 @@ By default, the filter order is set to run *before* Spring Security (highest pre
 - **Pros**: Captures 401 Unauthorized and 403 Forbidden requests rejected by Spring Security.
 - **Cons**: `request.getUserPrincipal()` might be null for unauthenticated or rejected requests.
 
-If you need the authenticated principal for all captured events, set `api.capture.filterOrder` to a higher number (lower precedence) so it runs *after* the Spring Security filter chain.
+If you need the authenticated principal for all captured events, set `api.capture.filterOrder` to a higher number (lower precedence) so it runs *after* the Spring Security filter chain. Note that the user ID is null on Spring Security apps unless you supply a custom `UserIdResolver` bean or ensure the filter runs after authentication.
 
 ## JSON Payload Shape
 

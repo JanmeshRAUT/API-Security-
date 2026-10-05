@@ -265,7 +265,24 @@ public class ApiCaptureTest {
         
         publisher.close();
         
-        assertThat(publisher.getFailed()).isGreaterThanOrEqualTo(0); // Timed out
+        assertThat(publisher.getFailed()).isEqualTo(3); // Timed out
+    }
+
+    @Test
+    void testQueueLimitExceeded() throws Exception {
+        artificialDelayMs = 500;
+        ApiCaptureProperties props = createProperties();
+        props.getPublisher().setQueueCapacity(1);
+        props.getPublisher().setWorkerThreads(1);
+        EventPublisher publisher = new EventPublisher(props, objectMapper);
+        
+        for (int i=0; i<5; i++) {
+            publisher.publish(new ApiEvent());
+        }
+        
+        publisher.close();
+        
+        assertThat(publisher.getDropped()).isGreaterThanOrEqualTo(3);
     }
 
     @Test

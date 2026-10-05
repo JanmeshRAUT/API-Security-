@@ -73,7 +73,7 @@ public class EventIngestionService {
         request.setApplicationId(targetAppId);
 
         ApplicationEntity app = applicationService.validateApiKey(rawApiKey)
-                .orElseGet(() -> applicationService.getOrCreateApplication(targetAppId, rawApiKey));
+                .orElseThrow(() -> new UnauthorizedException("Invalid or missing API key"));
 
         // Update application last seen timestamp
         applicationService.updateLastSeen(app.getApplicationId());

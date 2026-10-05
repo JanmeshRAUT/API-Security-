@@ -37,7 +37,7 @@ public class ApplicationControllerTest {
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.applicationId", is("shop-sphere-test")))
+                .andExpect(jsonPath("$.applicationId", is("test-service")))
                 .andExpect(jsonPath("$.apiKey", startsWith("sec_")))
                 .andExpect(jsonPath("$.status", is("ACTIVE")));
     }
